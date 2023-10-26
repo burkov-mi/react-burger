@@ -24,6 +24,7 @@
     background-color: transparent;
     font-family: inherit;
     display: inline-flex;
+    text-decoration: none;
 }
 
 .menuItemText{

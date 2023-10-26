@@ -13,6 +13,7 @@ const BurgerIngredients = (props) => {
       <div className={`${ingredientsStyles.tabs} mb-10`}>
         {props.tabs.map((tab) => (
           <Tab
+            key={tab._id}
             value={tab.value}
             active={currentTab === tab.value}
             onClick={setCurrentTab}
@@ -31,6 +32,7 @@ const BurgerIngredients = (props) => {
                   .data.filter((elem) => elem.type === tab.type)
                   .map((data) => (
                     <BurgerIngredientsElem
+                      key={data._id}
                       imageSrc={data.image}
                       price={data.price}
                       name={data.name}

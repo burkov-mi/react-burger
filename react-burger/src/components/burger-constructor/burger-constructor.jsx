@@ -11,10 +11,10 @@ const BurgerConstructor = (props) => {
                 <ConstructorElement type="top" isLocked={true} text={props.data[0].name} price={props.data[0].price} thumbnail={props.data[0].image}/>
             </div>
             <div className={burgerConstructorStyles.internal}>
-                {props.data.map((elem) => {
+                {props.data.map((elem, index) => {
                 if (elem.type !== "bun") {
                     return (
-                    <div className={`${burgerConstructorStyles.ingredientElem} ml-4 mr-4 mb-4`}>
+                    <div key={index} className={`${burgerConstructorStyles.ingredientElem} ml-4 mr-4 mb-4`}>
                         <DragIcon type="primary"/>
                         <ConstructorElement text={elem.name} price={elem.price} thumbnail={elem.image}/>
                     </div>
@@ -40,7 +40,9 @@ const BurgerConstructor = (props) => {
     );
   }
 
-  BurgerConstructor.propTypes = {
+
+  
+  const ingredient = PropTypes.shape({
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
@@ -53,6 +55,10 @@ const BurgerConstructor = (props) => {
     image_mobile: PropTypes.string.isRequired,
     image_large: PropTypes.string.isRequired,
     __v: PropTypes.number.isRequired,
+  });
+
+  BurgerConstructor.propTypes = {
+    ingredients: PropTypes.arrayOf(ingredient.isRequired)
   };
 
 
