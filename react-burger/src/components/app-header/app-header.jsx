@@ -6,7 +6,6 @@ const AppHeader = () => {
     
     return(
         <header className={headerStyles.header}>
-         
             <nav className={headerStyles.nav}>
                 <div className={`${headerStyles.leftPosition} ${headerStyles.fullHeight} `}>
                     <a href="#" className={`${headerStyles.menuItem} p-4 mr-2`}>

@@ -1,12 +1,18 @@
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from "./burger-constructor.module.css"
+import OrderDetails from "../order-details/order-details";
 import PropTypes from "prop-types";
+import { useState } from "react";
+
 
 
 const BurgerConstructor = (props) => {
+    const [show, setShow] = useState(false)
+
     return (
       <>
-        <div className={`${burgerConstructorStyles.basketList} mt-25`}>
+        <OrderDetails show={show} identifierOrder={"034536"} onCloseModal={() => setShow(false)}/>
+          <div className={`${burgerConstructorStyles.basketList} mt-25`}>
             <div className={`${burgerConstructorStyles.external} ml-4 mr-4 mb-4`}>
                 <ConstructorElement type="top" isLocked={true} text={props.data[0].name} price={props.data[0].price} thumbnail={props.data[0].image}/>
             </div>
@@ -32,7 +38,7 @@ const BurgerConstructor = (props) => {
                     <CurrencyIcon type="primary" />
                 </div>
                 <div className={burgerConstructorStyles.orderInfoButton}>
-                    <Button htmlType="button" type="primary" size="large">Оформить заказ</Button>
+                    <Button htmlType="button" type="primary" size="large" onClick={() => setShow(true)}>Оформить заказ</Button>
                 </div>
             </div>
       </div>
@@ -58,7 +64,7 @@ const BurgerConstructor = (props) => {
   });
 
   BurgerConstructor.propTypes = {
-    ingredients: PropTypes.arrayOf(ingredient.isRequired)
+    data: PropTypes.arrayOf(ingredient.isRequired)
   };
 
 
