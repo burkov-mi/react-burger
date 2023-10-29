@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 const ingredientsURL = "https://norma.nomoreparties.space/api/ingredients";
 
 const App = () => {
-    const [state, setState] = useState({
+    const [stateRequest, setRequesState] = useState({
         isLoading: false,
         hasError: false,
         ingredients: []
@@ -16,7 +16,7 @@ const App = () => {
     
     const [successed, setSuccessed] = useState(false);
 
-    const getIngredients = () => {
+   /* const getIngredients = () => {
         setState({ ...state, hasError: false, isLoading: true });
         fetch(ingredientsURL)
           .then(res => res.json())
@@ -27,7 +27,21 @@ const App = () => {
           .catch(e => {
             setState({ ...state, hasError: true, isLoading: false });
           });
-      };
+      };*/
+
+      async function getIngredients (){
+        setRequesState({ ...stateRequest, hasError: false, isLoading: true });
+        let response = await fetch(ingredientsURL);
+        if (response.ok) {
+            let data = await response.json();
+            setRequesState({ ...stateRequest, ingredients:data.data, isLoading: false })
+            setSuccessed(true);
+        } 
+        else {
+            setRequesState({ ...stateRequest, hasError: true, isLoading: false });
+            alert("Ошибка HTTP: " + response.status);
+        }
+      }
       
       useEffect(() => {
         getIngredients();
@@ -36,15 +50,15 @@ const App = () => {
     return(
         <>
         
-            <AppHeader isLoading={state.isLoading} hasError={state.hasError}/>
+            <AppHeader isLoading={stateRequest.isLoading} hasError={stateRequest.hasError}/>
 
             {  !successed ? (<p>Info loading</p>) : (
             <section className={appStyles.row}>
                 <div className='mr-10'>
-                    <BurgerIngredients tabs={Tabs} data={state.ingredients} />
+                    <BurgerIngredients tabs={Tabs} data={stateRequest.ingredients} />
                 </div>
                 <div>
-                    <BurgerConstructor data={state.ingredients}/>
+                    <BurgerConstructor data={stateRequest.ingredients}/>
                 </div>
             </section> )}
         </>

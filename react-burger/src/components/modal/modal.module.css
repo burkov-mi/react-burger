@@ -1,11 +1,14 @@
 .modal {
-    position: relative;
     background: #1c1c21;
     border: 1px solid rgba(76, 76, 255, 0.2);
     border-radius: 40px;
     width: 720px;
     cursor: auto;
     z-index: 5;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
   
   .modalHeader {

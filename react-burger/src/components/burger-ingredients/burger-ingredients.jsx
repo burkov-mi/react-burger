@@ -4,9 +4,10 @@ import BurgerIngredientsElem from "../burger-ingredients-elem/burger-intgredient
 import PropTypes from "prop-types";
 import { useState } from "react";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import Modal from "../modal/modal";
 
 const BurgerIngredients = (props) => {
-  const [state, setState] = useState({
+  const [ingredientState, setIngredientState] = useState({
     show: false,
     ingredientName: "",
     ingredientProtein: 0,
@@ -17,25 +18,28 @@ const BurgerIngredients = (props) => {
     currentTab: "bun"
   });
 
-
-  return (
+   return (
     <>
-      <IngredientDetails
-        onCloseModal={() => setState((prevState) => ({...prevState, show: false, }))}
-        show={state.show}
-        ingredientName={state.ingredientName}
-        ingredientProtein={state.ingredientProtein}
-        ingredientFat={state.ingredientFat}
-        ingredeintCarbohydrates={state.ingredeintCarbohydrates}
-        ingredientCalories={state.ingredientCalories}
-        ingredientImg={state.ingredientImg}
-      />
+    { <Modal 
+        onCloseModal={() => setIngredientState((prevState) => ({...prevState, show: false, }))}
+        show={ingredientState.show}
+      >
+        <IngredientDetails
+          ingredientName={ingredientState.ingredientName}
+          ingredientProtein={ingredientState.ingredientProtein}
+          ingredientFat={ingredientState.ingredientFat}
+          ingredeintCarbohydrates={ingredientState.ingredeintCarbohydrates}
+          ingredientCalories={ingredientState.ingredientCalories}
+          ingredientImg={ingredientState.ingredientImg}
+        />
+      </Modal>
+    }
       <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
       <div className={`${ingredientsStyles.tabs} mb-10`}>
         {props.tabs.map((tab) => (
-          <Tab key={tab._id} value={tab.value} active={state.currentTab === tab.value}
+          <Tab key={tab._id} value={tab.value} active={ingredientState.currentTab === tab.value}
             onClick={() =>
-              setState((prevState) => ({
+              setIngredientState((prevState) => ({
                 ...prevState,
                 currentTab: tab.value,
               }))
@@ -44,6 +48,7 @@ const BurgerIngredients = (props) => {
             {tab.name}
           </Tab>
         ))}
+
       </div>
       {props.data && (
         <div className={ingredientsStyles.components}>
@@ -57,9 +62,9 @@ const BurgerIngredients = (props) => {
                   .map((el) => (
                     <BurgerIngredientsElem key={el._id} imageSrc={el.image} price={el.price} name={el.name}
                     onClick={() =>
-                      setState((prevState) => ({
+                      setIngredientState((prevState) => ({
                         ...prevState,
-                        show: !state.show,
+                        show: !ingredientState.show,
                         ingredientName: el.name,
                         ingredientProtein: el.proteins,
                         ingredientFat: el.fat,

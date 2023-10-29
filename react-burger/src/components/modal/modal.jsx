@@ -3,6 +3,9 @@ import modalStyles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect } from "react";
 import PropTypes from "prop-types";
+import { createPortal } from "react-dom";
+
+const modalRoot = document.getElementById("root-modal");
 
 const Modal = (props) => {
     useEffect(() => {
@@ -21,30 +24,35 @@ const Modal = (props) => {
         }
     }, [props.show]);
 
+    if(!props.show){
+        return null;
+    }
     
-
-    return(
-        <ModalOverlay show={props.show} onCloseModal={props.onCloseModal}>
-          <div onClick={(e) => e.stopPropagation()} className={modalStyles.modal}>
-            {props.header ? (
-              <div className={`${modalStyles.modalHeader} ml-10 mr-10 mt-10`}>
-                <p className="text text_type_main-large">{props.header}</p>
-                <div className={`${modalStyles.closeModalCursor}`} onClick={props.onCloseModal}>
-                  <CloseIcon type="primary" />
-                </div>
-              </div>
-            ) : (
-              <div>
-                <div className={`${modalStyles.closeModalIcon} mr-10 mt-15`} onClick={props.onCloseModal}>
-                  <CloseIcon className={modalStyles.cursorStyle}type="primary" />
-                </div>
-              </div>
-            )}
-            {props.children}
-        </div>
-      </ModalOverlay>
-    )
-
+    return createPortal(
+    (
+      <>
+      <div onClick={(e) => e.stopPropagation()} className={modalStyles.modal}>
+        {props.header ? (
+          <div className={`${modalStyles.modalHeader} ml-10 mr-10 mt-10`}>
+            <p className="text text_type_main-large">{props.header}</p>
+            <div className={`${modalStyles.closeModalCursor}`} onClick={props.onCloseModal}>
+              <CloseIcon type="primary" />
+            </div>
+          </div>
+        ) : (
+          <div>
+            <div className={`${modalStyles.closeModalIcon} mr-10 mt-15`} onClick={props.onCloseModal}>
+              <CloseIcon className={modalStyles.cursorStyle}type="primary" />
+            </div>
+          </div>
+        )}
+        {props.children}
+    </div>
+    <ModalOverlay onCloseModal={props.onCloseModal}></ModalOverlay>
+    </>
+    ), 
+    modalRoot
+  );
 }
 
 

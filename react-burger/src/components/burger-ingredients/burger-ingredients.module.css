@@ -5,10 +5,12 @@
 
 .components {
   overflow-y: auto;
-  max-width: 600px;
+  max-width: 605px;
   max-height: 756px;
 }
 
 .elem_container {
   display: flex;
+  flex-wrap: wrap;
+  cursor: pointer;
 }
