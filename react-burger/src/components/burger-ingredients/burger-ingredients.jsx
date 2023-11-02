@@ -2,11 +2,13 @@ import ingredientsStyles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsElem from "../burger-ingredients-elem/burger-intgredients-elem";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
+import tabs from "../../utils/tabs";
+import { DataContext } from "../services/app-context";
 
-const BurgerIngredients = (props) => {
+const BurgerIngredients = () => {
   const [ingredientState, setIngredientState] = useState({
     show: false,
     ingredientName: "",
@@ -17,6 +19,7 @@ const BurgerIngredients = (props) => {
     ingredientImg: "",
     currentTab: "bun"
   });
+  const data = useContext(DataContext);
 
    return (
     <>
@@ -36,7 +39,7 @@ const BurgerIngredients = (props) => {
     }
       <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
       <div className={`${ingredientsStyles.tabs} mb-10`}>
-        {props.tabs.map((tab) => (
+        {tabs.map((tab) => (
           <Tab key={tab._id} value={tab.value} active={ingredientState.currentTab === tab.value}
             onClick={() =>
               setIngredientState((prevState) => ({
@@ -50,14 +53,14 @@ const BurgerIngredients = (props) => {
         ))}
 
       </div>
-      {props.data && (
+      {data && (
         <div className={ingredientsStyles.components}>
-          {props.tabs.map((tab) => (
+          {tabs.map((tab) => (
             <section key={tab._id}>
               <p className="text text_type_main-medium">{tab.name}</p>
               <div className={`${ingredientsStyles.elem_container} ml-4`}>
-                { props.data &&
-                  props.data
+                { data &&
+                  data
                   .filter((elem) => elem.type === tab.type)
                   .map((el) => (
                     <BurgerIngredientsElem key={el._id} imageSrc={el.image} price={el.price} name={el.name}
