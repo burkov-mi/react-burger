@@ -29,18 +29,23 @@ const IngredientDetails = ({ingredient}) =>{
         </div>
     )
 }
-/*
-const IngredientPropType = {
+
+const ingredient = PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    image_large: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
     ingredientImg: PropTypes.string.isRequired,
     ingredientNameText: PropTypes.string.isRequired,
-    ingredientCalories: PropTypes.number.isRequired,
-    ingredientProtein: PropTypes.number.isRequired,
-    ingredientFat: PropTypes.number.isRequired,
-    ingredeintCarbohydrates: PropTypes.number.isRequired,
-}
+    calories: PropTypes.number.isRequired,
+    proteins: PropTypes.number.isRequired,
+    fat: PropTypes.number.isRequired,
+    carbohydrates: PropTypes.number.isRequired,
 
-IngredientDetails.propTypes = {
-    ingredient: PropTypes.shape(IngredientPropType).isRequired
-}*/
+  });
+  
+BurgerIngredientsElem.propTypes = {
+    ingredient: ingredient.isRequired,
+};
 
 export default IngredientDetails;
