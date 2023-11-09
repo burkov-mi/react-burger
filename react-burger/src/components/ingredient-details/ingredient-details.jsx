@@ -44,7 +44,7 @@ const ingredient = PropTypes.shape({
 
   });
   
-BurgerIngredientsElem.propTypes = {
+IngredientDetails.propTypes = {
     ingredient: ingredient.isRequired,
 };
 
