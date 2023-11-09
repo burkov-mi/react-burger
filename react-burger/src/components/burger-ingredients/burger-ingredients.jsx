@@ -1,83 +1,100 @@
+import { useEffect } from 'react';
 import ingredientsStyles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsElem from "../burger-ingredients-elem/burger-intgredients-elem";
-import PropTypes from "prop-types";
-import { useState, useContext } from "react";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
 import tabs from "../../utils/tabs";
-import { DataContext } from "../services/app-context";
+import { useDispatch, useSelector } from 'react-redux'
+import { getIngredients } from "../../services/actions/burger-ingredients";
+import { HIDE_INGREDIENT_DETAIL } from "../../services/actions/burger-ingredients";
+import { SWITCH_TAB } from "../../services/actions/tabs";
+import { useInView } from "react-intersection-observer";
+
 
 const BurgerIngredients = () => {
-  const [ingredientState, setIngredientState] = useState({
-    show: false,
-    ingredientName: "",
-    ingredientProtein: 0,
-    ingredientFat: 0,
-    ingredeintCarbohydrates: 0,
-    ingredientCalories: 0,
-    ingredientImg: "",
-    currentTab: "bun"
-  });
-  const data = useContext(DataContext);
+  const dispatch = useDispatch();
+  const { ingredients, ingredientDetail } = useSelector(store => store.ingredients)
+  const { currentTab } = useSelector( store => store.currentTab )
+  function hideIngredientDetail(e) {
+    e.stopPropagation();
+    dispatch({ type: HIDE_INGREDIENT_DETAIL, item: null });
+  }
+  
+  useEffect(
+    () => {
+      if (!ingredients.length) dispatch(getIngredients());
+    },
+    [dispatch]
+  );
+  const onTabClick = (value) => {
+    dispatch({ type: SWITCH_TAB, currentTab: value });
+		const element = document.getElementById(value);
+    if (element) element.scrollIntoView({ behavior: "smooth" });
+	};
 
-   return (
+  const inViewOptions = {
+    threshold: 0,
+    trackVisibility: true,
+    delay: 100
+  };
+
+  const [bunRef, inViewBun] = useInView(inViewOptions);
+  const [mainRef, inViewMain] = useInView(inViewOptions);
+  const [sauceRef, inViewSauce] = useInView(inViewOptions);
+    
+  const categoryRefMap = {
+    bun: bunRef,
+    sauce: sauceRef,
+    main: mainRef,
+  };
+
+  useEffect(() => {
+    if (inViewBun) {
+      dispatch({ type: SWITCH_TAB, currentTab: 'bun' });
+    }
+    else if (inViewSauce) {
+      dispatch({ type: SWITCH_TAB, currentTab: 'sauce' });
+    }
+    else if (inViewMain) {
+      dispatch({ type: SWITCH_TAB, currentTab: 'main' });
+    }
+   }, [inViewBun, inViewSauce, inViewMain]);
+
+  return (
     <>
-    { <Modal 
-        onCloseModal={() => setIngredientState((prevState) => ({...prevState, show: false, }))}
-        show={ingredientState.show}
+    { ingredientDetail &&
+      <Modal 
+        onCloseModal={hideIngredientDetail}
       >
-        <IngredientDetails
-          ingredientName={ingredientState.ingredientName}
-          ingredientProtein={ingredientState.ingredientProtein}
-          ingredientFat={ingredientState.ingredientFat}
-          ingredeintCarbohydrates={ingredientState.ingredeintCarbohydrates}
-          ingredientCalories={ingredientState.ingredientCalories}
-          ingredientImg={ingredientState.ingredientImg}
-        />
+        <IngredientDetails ingredient={ingredientDetail}/>
       </Modal>
     }
+
       <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
       <div className={`${ingredientsStyles.tabs} mb-10`}>
         {tabs.map((tab) => (
-          <Tab key={tab._id} value={tab.value} active={ingredientState.currentTab === tab.value}
-            onClick={() =>
-              setIngredientState((prevState) => ({
-                ...prevState,
-                currentTab: tab.value,
-              }))
-            }
+          <Tab key={tab._id} value={tab.value} active={currentTab === tab.value}
+            onClick={() => onTabClick(tab.value)}
           >
             {tab.name}
           </Tab>
         ))}
 
       </div>
-      {data && (
+      {ingredients && (
         <div className={ingredientsStyles.components}>
           {tabs.map((tab) => (
-            <section key={tab._id}>
+            <section ref={categoryRefMap[tab.type]} id={tab.type} key={tab._id} >
               <p className="text text_type_main-medium">{tab.name}</p>
               <div className={`${ingredientsStyles.elem_container} ml-4`}>
-                { data &&
-                  data
+                { ingredients &&
+                  ingredients
                   .filter((elem) => elem.type === tab.type)
-                  .map((el) => (
-                    <BurgerIngredientsElem key={el._id} imageSrc={el.image} price={el.price} name={el.name}
-                    onClick={() =>
-                      setIngredientState((prevState) => ({
-                        ...prevState,
-                        show: !ingredientState.show,
-                        ingredientName: el.name,
-                        ingredientProtein: el.proteins,
-                        ingredientFat: el.fat,
-                        ingredeintCarbohydrates: el.carbohydrates,
-                        ingredientCalories: el.calories,
-                        ingredientImg: el.image_large,
-                      }))
-                    }
-                    />
-                  ))}
+                  .map((el) => {
+                    return <BurgerIngredientsElem item={el} key={el._id}/>
+                  }
+                  )}
               </div>
             </section>
           ))}
@@ -86,33 +103,5 @@ const BurgerIngredients = () => {
     </>
   );
 }
-
-const tab = PropTypes.shape({
-  name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-});
-
-const data = PropTypes.shape({
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  proteins: PropTypes.number.isRequired,
-  fat: PropTypes.number.isRequired,
-  carbohydrates: PropTypes.number.isRequired,
-  calories: PropTypes.number.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  image_mobile: PropTypes.string.isRequired,
-  image_large: PropTypes.string.isRequired,
-  __v: PropTypes.number.isRequired,
-});
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(data.isRequired),
-  tabs: PropTypes.arrayOf(tab.isRequired),
-};
-
-
 
 export default BurgerIngredients;

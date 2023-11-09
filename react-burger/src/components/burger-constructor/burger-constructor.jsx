@@ -1,57 +1,76 @@
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from "./burger-constructor.module.css"
 import OrderDetails from "../order-details/order-details";
-import PropTypes from "prop-types";
-import { useState, useEffect, useContext } from "react";
-import { DataContext } from "../services/app-context";
-import { post_request } from "../../utils/post-request";
-
-const orderEndpoint = "https://norma.nomoreparties.space/api/orders";
-
+import Modal from "../modal/modal";
+import { useDispatch, useSelector } from 'react-redux'
+import { HIDE_ORDER_DETAIL } from "../../services/actions/make-order";
+import { makeOrder } from "../../services/actions/make-order";
+import { ADD_BUN, ADD_INGREDIENT } from "../../services/actions/burger-constructor";
+import { useDrop } from 'react-dnd';
+import { v4 } from 'uuid';
+import { totalPriceSelector } from "../../utils/totalPriceSelector";
+import BurgerConstructorElem from "../burger-constructor-elem/burger-constructor-elem";
 
 
 const BurgerConstructor = () => {
-    const [show, setShow] = useState(false)
-    const data = useContext(DataContext);
-    const bun = data.find(el => el.type === "bun");
-    const listIngredients = data.filter(el => el.type !== 'bun');
-    const [totalPrice, setTotalPrice ] = useState(0);
-    const [order, setOrder] = useState(null)
-    const ingredientsIds = data.map( el => el._id);
+    const dispatch = useDispatch();
+    const orderIdentifier = useSelector(store => store.makeOrder.orderIdentifier)
+    const { bun, ingredients } = useSelector(store => store.constructorBurger)
+    const [, dropTarget] = useDrop({
+		accept: 'ingredient',
+         drop(item) { addIngredient({...item, id: v4()}) }
+  });
 
-    useEffect(() => {
-        let totalprice = bun ? bun.price * 2 : 0;
-        listIngredients.map(el => (totalprice += el.price))
-        setTotalPrice(totalprice);
-    }, [bun, listIngredients, setTotalPrice])
+	const addIngredient = (item) => {
+		if(item.type === 'bun') {
+			dispatch({
+				type: ADD_BUN,
+				bun: item
+			});
+		}
+		else {
+			dispatch({
+				type: ADD_INGREDIENT,
+  				ingredient: item
+			});
+		}
+  };
 
-    const takeOrder = () => {
-        post_request( orderEndpoint, ingredientsIds)
-        .then( data => {
-            setOrder(data);
-            setShow(true);
-        });
+    const totalPrice = useSelector(totalPriceSelector);
+
+    const handleClose = () => {
+		dispatch({type: HIDE_ORDER_DETAIL});
+	}
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        const burgerElems = [bun, ...ingredients]
+        const ingredientsIds = burgerElems.map( el => el._id)
+        dispatch(makeOrder(ingredientsIds));
     }
-    
     
     return (
       <>
-        <OrderDetails show={show} identifierOrder={order ? order.order.number : ''} onCloseModal={() => setShow(false)}/>
-          <div className={`${burgerConstructorStyles.basketList} mt-25`}>
+        { orderIdentifier && 
+            <Modal onCloseModal={handleClose}>
+                <OrderDetails orderIdentifier={orderIdentifier}/>
+            </Modal> }
+        
+          <div className={`${burgerConstructorStyles.basketList} mt-25` } ref={dropTarget}>
+          { (bun) ?
+          <>
             <div className={`${burgerConstructorStyles.external} ml-4 mr-4 mb-4`}>
                 <ConstructorElement type="top" isLocked={true} text={`${bun.name} - верх`} price={bun.price} thumbnail={bun.image}/>
             </div>
             <div className={burgerConstructorStyles.internal}>
-                {listIngredients.map((elem, index) => {
-                if (elem.type !== "bun") {
+                {ingredients && 
+                    ingredients.map((elem, index) => {
+                    {
                     return (
-                    <div key={index} className={`${burgerConstructorStyles.ingredientElem} ml-4 mr-4 mb-4`}>
-                        <DragIcon type="primary"/>
-                        <ConstructorElement text={elem.name} price={elem.price} thumbnail={elem.image}/>
-                    </div>
+                      <BurgerConstructorElem text={elem.name} price={elem.price} thumbnail={elem.image} id={elem.id} index={index} />
                     );
                 }
-                return null;
+                
                 })}
             </div>
             <div className="ml-4 mr-4 mb-4">
@@ -63,34 +82,15 @@ const BurgerConstructor = () => {
                     <CurrencyIcon type="primary" />
                 </div>
                 <div className={burgerConstructorStyles.orderInfoButton}>
-                    <Button htmlType="button" type="primary" size="large" onClick={() => takeOrder()}>Оформить заказ</Button>
+                    <Button htmlType="submit" type="primary" size="large" onClick={onSubmit}>Оформить заказ</Button>
                 </div>
             </div>
+            </> : 
+            <p>Здесь должна быть ваша реклама, до on drop</p>
+        }
       </div>
       </>
     );
   }
-
-
-  
-  const ingredient = PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    calories: PropTypes.number.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string.isRequired,
-    image_large: PropTypes.string.isRequired,
-    __v: PropTypes.number.isRequired,
-  });
-
-  BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(ingredient.isRequired)
-  };
-
 
   export default BurgerConstructor;

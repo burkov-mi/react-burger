@@ -14,20 +14,11 @@ const Modal = (props) => {
             props.onCloseModal()
           }
         }
-        if (props.show) {
-          window.addEventListener('keydown', close)
-        }
+        window.addEventListener('keydown', close)
       return () => {
-        if(!props.show)
-        {
-          window.removeEventListener('keydown', close)}
-        }
-    }, [props.show]);
-
-    if(!props.show){
-        return null;
-    }
-    
+        window.removeEventListener('keydown', close)}
+    }, []);
+  
     return createPortal(
     (
       <>
@@ -57,7 +48,6 @@ const Modal = (props) => {
 
 
 Modal.propTypes = {
-  show: PropTypes.bool.isRequired,
   onCloseModal: PropTypes.func,
   header: PropTypes.string,
   children: PropTypes.any
