@@ -16,8 +16,7 @@ const BurgerIngredients = () => {
   const dispatch = useDispatch();
   const { ingredients, ingredientDetail } = useSelector(store => store.ingredients)
   const { currentTab } = useSelector( store => store.currentTab )
-  function hideIngredientDetail(e) {
-    e.stopPropagation();
+  function hideIngredientDetail() {
     dispatch({ type: HIDE_INGREDIENT_DETAIL, item: null });
   }
   
@@ -64,9 +63,7 @@ const BurgerIngredients = () => {
   return (
     <>
     { ingredientDetail &&
-      <Modal 
-        onCloseModal={hideIngredientDetail}
-      >
+      <Modal onCloseModal={hideIngredientDetail} header="Детали ингредиента">
         <IngredientDetails ingredient={ingredientDetail}/>
       </Modal>
     }

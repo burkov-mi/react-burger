@@ -35,8 +35,6 @@ const ingredient = PropTypes.shape({
     name: PropTypes.string.isRequired,
     image_large: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    ingredientImg: PropTypes.string.isRequired,
-    ingredientNameText: PropTypes.string.isRequired,
     calories: PropTypes.number.isRequired,
     proteins: PropTypes.number.isRequired,
     fat: PropTypes.number.isRequired,

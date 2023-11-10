@@ -11,7 +11,7 @@ const App = () => {
     return(
         <>
             <AppHeader/>
-            <section className={appStyles.row}>
+            <main className={appStyles.row}>
                 <DndProvider backend={HTML5Backend}>
                 <div className='mr-10'>
                     <BurgerIngredients/>
@@ -20,7 +20,7 @@ const App = () => {
                     <BurgerConstructor/>
                 </div> 
                 </DndProvider>
-            </section>
+            </main>
         </>
     )
 }

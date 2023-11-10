@@ -1,4 +1,4 @@
-export function get_request(endpoint){
-    return fetch(endpoint)
-    .then( res => res.ok ? res.json() : res.json().then((err) => Promise.reject(err)) );
+import { checkResponse } from "./check-response";
+export function getRequest(endpoint){
+    return fetch(endpoint).then( checkResponse );
 }

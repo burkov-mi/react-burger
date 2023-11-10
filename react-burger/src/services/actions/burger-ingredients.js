@@ -1,4 +1,4 @@
-import { get_request } from "../../utils/get-request";
+import { getRequest } from "../../utils/get-request";
 import baseURL from "../../utils/base-url";
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
@@ -14,7 +14,7 @@ export function getIngredients() {
         dispatch({
             type: GET_INGREDIENTS_REQUEST
         })
-        get_request(ingredientsURL).then(res => {
+        getRequest(ingredientsURL).then(res => {
             dispatch({
                 type: GET_INGREDIENTS_SUCCESS,
                 ingredients: res.data
