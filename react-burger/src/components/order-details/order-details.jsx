@@ -1,13 +1,11 @@
 import orderDetailsStyles from "./order-details.module.css";
-import Modal from "../../components/modal/modal";
 import PropTypes from "prop-types";
 
 const OrderDetails = (props) => {
     return(
-        <Modal show={props.show} onCloseModal={props.onCloseModal}>
             <div>
                 <div className={`${orderDetailsStyles.orderId} text text_type_digits-large mt-30`}> 
-                    {props.identifierOrder}
+                    {props.orderIdentifier}
                 </div>
                 <div className={`${orderDetailsStyles.textOrder} mt-8`}>
                     идентификатор заказа
@@ -20,13 +18,11 @@ const OrderDetails = (props) => {
                         Дождитесь готовности на орбитальной станции
                     </p>
             </div>
-        </Modal>
     )
 }
 
 OrderDetails.propTypes = {
-    show: PropTypes.bool.isRequired,
-    onCloseModal: PropTypes.func.isRequired,
-}
+    orderIdentifier: PropTypes.number.isRequired
+  }
 
 export default OrderDetails;
