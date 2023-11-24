@@ -8,7 +8,6 @@ import { getUser } from '../../services/actions/user';
 import { getCookie } from '../../utils/cookie';
 import ProtectedRouteLoginElement from '../protected-route-login';
 import ProtectedRouteElement from '../protected-route';
-import BurgerIngredientsElem from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 
