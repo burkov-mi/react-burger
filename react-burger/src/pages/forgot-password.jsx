@@ -1,20 +1,15 @@
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './pages.module.css';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom'
 import { forgotPassword } from '../services/actions/user';
+import { useForm } from '../hooks/use-form';
 
 const ForgotPasswordPage = () => {
     const dispatch = useDispatch();
     const forgotPasswordSuccess = useSelector( state => state.user.forgotPasswordSuccess );
-    const [form, setValue] = useState({
-        email: "",
-      });
-
-    const onChange = (e) => {
-        setValue({ ...form, [e.target.name]: e.target.value });
-    };
+    const { form, onChange } = useForm({ email: '' })
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(forgotPassword(form));

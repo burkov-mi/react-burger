@@ -1,21 +1,20 @@
 import { Button, Input, PasswordInput, } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './pages.module.css';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import { resetPassword } from '../services/actions/user';
+import { useForm } from '../hooks/use-form';
 
 const ResetPasswordPage = () => {
     const dispatch = useDispatch();
     const resetPasswordSuccess = useSelector( state => state.user.resetPasswordSuccess );
-    const [form, setValue] = useState({
-        password: "",
-        token: "",
-      });
+    
+	const { form, onChange } = useForm({
+		password: '',
+		token: '',
+	})
 
-    const onChange = (e) => {
-        setValue({ ...form, [e.target.name]: e.target.value });
-    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(resetPassword(form));

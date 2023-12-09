@@ -1,23 +1,21 @@
 import { Button, EmailInput, Input, PasswordInput, } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './pages.module.css';
-import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { register } from '../services/actions/user';
 import { Link } from 'react-router-dom';
+import { useForm } from '../hooks/use-form';
 
 
 
 const RegisterPage = () => {
 
     const dispatch = useDispatch();
-    const [form, setValue] = useState({
-      name: "",
-      email: "",
-      password: "",
-    });
-    const onChange = (e) => {
-      setValue({ ...form, [e.target.name]: e.target.value });
-    };
+    const { form, onChange } = useForm({
+		name: '',
+		email: '',
+		password: '',
+	})
+
     const handleSubmit = (e) => {
       e.preventDefault();
       dispatch(register(form));

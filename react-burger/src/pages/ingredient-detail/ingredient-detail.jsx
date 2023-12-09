@@ -1,6 +1,6 @@
 import IngredientDetails from '../../components/ingredient-details/ingredient-details';
 import styles from './ingredient-detail.module.css';
-import { useSelector } from 'react-redux';
+
 
 const IngredientDetailPage = () => {
 	return (

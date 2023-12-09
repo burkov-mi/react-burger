@@ -1,10 +1,10 @@
 import { Button, EmailInput, PasswordInput, } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './pages.module.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useCallback } from 'react'
 import { login } from '../services/actions/user';
+import { useForm } from '../hooks/use-form';
 
 
 const LoginPage = () => {
@@ -13,14 +13,7 @@ const LoginPage = () => {
     const location = useLocation();
     const from = location.state?.from || "/";
 
-    const [form, setValue] = useState({
-        email: "",
-        password: "",
-      });
-
-    const onChange = (e) => {
-    setValue({ ...form, [e.target.name]: e.target.value });
-    };
+    const { form, onChange } = useForm({ email: '', password: '' })
 
     const handleSubmit = useCallback(
 		e => {
