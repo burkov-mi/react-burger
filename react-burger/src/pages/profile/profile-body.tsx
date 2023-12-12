@@ -1,14 +1,14 @@
 import { Button, Input, PasswordInput,} from '@ya.praktikum/react-developer-burger-ui-components';
 import profileBodyStyle from './profile.module.css';
-import { useEffect } from 'react';
+import { useEffect, FC, FormEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { patchUser } from '../../services/actions/user';
 import { useForm } from '../../hooks/use-form';
 
 
-const ProfileBody = () => {
+const ProfileBody: FC = () => {
 	const dispatch = useDispatch();
-	const userCurrentData = useSelector(state => state.user.user);
+	const userCurrentData = useSelector((state:any) => state.user.user);
 	const { form, onChange, setValue } = useForm({
 		name: '',
 		email: '',
@@ -35,9 +35,9 @@ const ProfileBody = () => {
 			password: "",
 		})
 	}
-	const handleSubmit = e => {
+	const handleSubmit = (e: FormEvent<HTMLFormElement> )=> {
 		e.preventDefault()
-		dispatch(patchUser(form.name, form.email, form.password))
+		dispatch<any>(patchUser(form.name, form.email, form.password))
 	}
 	
     return (

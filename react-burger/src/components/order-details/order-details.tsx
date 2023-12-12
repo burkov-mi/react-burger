@@ -1,7 +1,8 @@
 import orderDetailsStyles from "./order-details.module.css";
-import PropTypes from "prop-types";
+import { FC } from "react";
+import { TOrderDetails } from "../../utils/types/order";
 
-const OrderDetails = (props) => {
+const OrderDetails: FC<TOrderDetails> = (props) => {
     return(
             <div>
                 <div className={`${orderDetailsStyles.orderId} text text_type_digits-large mt-30`}> 
@@ -20,9 +21,5 @@ const OrderDetails = (props) => {
             </div>
     )
 }
-
-OrderDetails.propTypes = {
-    orderIdentifier: PropTypes.number.isRequired
-  }
 
 export default OrderDetails;

@@ -2,13 +2,15 @@ import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import profileNavStyles from './profile.module.css';
 import { logout } from '../../services/actions/user';
+import { FC } from 'react';
 
-const ProfileSideBar = () => {
+
+const ProfileSideBar: FC = () => {
 	const dispatch = useDispatch()
 
-	const handleLogout = e => {
+	const handleLogout = (e: React.SyntheticEvent) => {
 		e.preventDefault()
-		dispatch(logout())
+		dispatch<any>(logout())
 	}
 	return (
 		<nav className={`${profileNavStyles.sidebar} mr-15`}>

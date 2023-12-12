@@ -7,10 +7,6 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.59",
-    "@types/react": "^18.2.31",
-    "@types/react-dom": "^18.2.14",
     "@ya.praktikum/react-developer-burger-ui-components": "^1.14.0",
     "classnames": "^2.3.2",
     "immutability-helper": "^3.1.1",
@@ -55,6 +51,10 @@
     ]
   },
   "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.10.4",
+    "@types/react": "^18.2.42",
+    "@types/react-dom": "^18.2.17",
     "redux-devtools-extension": "^2.13.9"
   }
 }

@@ -11,20 +11,23 @@ import { v4 } from 'uuid';
 import { totalPriceSelector } from "../../utils/totalPriceSelector";
 import BurgerConstructorElem from "../burger-constructor-elem/burger-constructor-elem";
 import { useNavigate } from "react-router";
+import { TIngredient, TIngredientShort } from "../../utils/types/ingredient";
+import { FC } from "react";
 
+//type ExtendedIngredientShort = TIngredientShort & {id:string};
 
-const BurgerConstructor = () => {
+const BurgerConstructor: FC = () => {
     const dispatch = useDispatch();
-    const orderIdentifier = useSelector(store => store.makeOrder.orderIdentifier);
-    const { bun, ingredients } = useSelector(store => store.constructorBurger);
-    const user = useSelector(state => state.user.user);
+    const orderIdentifier = useSelector((store: any) => store.makeOrder.orderIdentifier);
+    const { bun, ingredients } = useSelector((store: any) => store.constructorBurger);
+    const user = useSelector((state: any) => state.user.user);
     const navigate = useNavigate();
     const [, dropTarget] = useDrop({
 		accept: 'ingredient',
-         drop(item) { addIngredient({...item, id: v4()}) }
+         drop(item: TIngredient) { addIngredient({...item, id: v4()}) }
   });
 
-	const addIngredient = (item) => {
+	const addIngredient = (item: TIngredient & { id: string }) => {
 		if(item.type === 'bun') {
 			dispatch({
 				type: ADD_BUN,
@@ -45,17 +48,17 @@ const BurgerConstructor = () => {
 		dispatch({type: HIDE_ORDER_DETAIL});
 	}
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        if (!user) {
-          navigate("/login")
-        }
-        else{
-          const burgerElems = [bun, ...ingredients]
-          const ingredientsIds = burgerElems.map( el => el._id)
-          dispatch(makeOrder(ingredientsIds));
-        }
+  const onSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    if (!user) {
+      navigate("/login")
     }
+    else{
+      const burgerElems = [bun, ...ingredients]
+      const ingredientsIds = burgerElems.map( el => el._id)
+      dispatch<any>(makeOrder(ingredientsIds));
+    }
+  }
     
     return (
       <>
@@ -72,10 +75,10 @@ const BurgerConstructor = () => {
             </div>
             <div className={burgerConstructorStyles.internal}>
                 {ingredients && 
-                    ingredients.map((elem, index) => {
+                    ingredients.map((elem: TIngredientShort, index:number) => {
                     {
                     return (
-                      <BurgerConstructorElem text={elem.name} price={elem.price} thumbnail={elem.image} id={elem.id} key={elem.id} index={index} />
+                      <BurgerConstructorElem name={elem.name} price={elem.price} image={elem.image} id={elem.id} key={elem.id} index={index} />
                     );
                 }
                 

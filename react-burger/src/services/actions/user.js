@@ -92,7 +92,6 @@ export function login(user) {
 
 export function getUser() {
 	return function (dispatch) {
-		console.log('zashli')
 		dispatch({ type: GET_USER_REQUEST })
 		requestWithToken(userEndpoint, "GET")
 			.then(res => {

@@ -1,14 +1,16 @@
 import elemStyles from "./burger-ingredients-elem.module.css";
 import { CurrencyIcon, Counter,} from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from 'react-redux'
 import { SHOW_INGREDIENT_DETAIL } from "../../services/actions/burger-ingredients";
-import { useMemo } from 'react';
+import { useMemo, FC } from 'react';
 import { useDrag } from 'react-dnd';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router'
+import { TBurgerIngredient } from "../../utils/types/ingredient";
 
-const BurgerIngredientsElem = ({item}) => {
+
+
+const BurgerIngredientsElem: FC<TBurgerIngredient> = ({item}) => {
   const dispatch = useDispatch();
   const location = useLocation()
   const ingredientClick = () => {
@@ -18,7 +20,7 @@ const BurgerIngredientsElem = ({item}) => {
     });
   };
 
-	const { bun, ingredients } = useSelector(state => state.constructorBurger);
+	const { bun, ingredients } = useSelector((state: any) => state.constructorBurger);
   const count = useMemo(() => {
     return [bun, ...ingredients].filter(el => {
       if (el) {
@@ -57,19 +59,5 @@ const BurgerIngredientsElem = ({item}) => {
     </Link>
   );
 }
-
-const item = PropTypes.shape({
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired
-})
-
-BurgerIngredientsElem.propTypes = {
-  item: item.isRequired,
-};
-
-
-
 
 export default BurgerIngredientsElem;

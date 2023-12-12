@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import { Navigate, useLocation } from 'react-router-dom';
+import { FC } from 'react';
+import { TRoute } from '../utils/types/route';
 
-const ProtectedRouteElement = ({ element, isAuth}) => {
+const ProtectedRouteElement: FC<TRoute> = ({ element, isAuth}) => {
     const location = useLocation();
     const destination = location.state?.from || "/";
     if(isAuth){

@@ -1,22 +1,20 @@
-import React from 'react';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon,} from '@ya.praktikum/react-developer-burger-ui-components';
 import headerStyles from './app-header.module.css';
 import { useLocation , NavLink, Link } from "react-router-dom";
+import { FC } from 'react';
 
-
-const iconType = (link, active) => {
-    if (active === link) return "primary";
-    return "secondary";
- };
-
- const colorTextType = (link, active) => {
-    if (active === link) return headerStyles.menuItemText;
-    return headerStyles.colorTitle;
-
- }
-
-const AppHeader = () => {
+const AppHeader: FC = () => {
     const location = useLocation(); 
+    const iconType = (link: string, active:string) => {
+        if (active === link) return "primary";
+        return "secondary";
+     };
+
+    const colorTextType = (link:string, active:string) => {
+        if (active === link) return headerStyles.menuItemText;
+        return headerStyles.colorTitle;
+    
+     }
 
     return(
         <header className={headerStyles.header}>

@@ -3,13 +3,18 @@ import burgerConstructorElementStyles from "./burger-constructor-elem.module.css
 import { useDispatch } from 'react-redux'
 import { DELETE_INGREDIENT } from '../../services/actions/burger-constructor'
 import { MOVE_INGREDIENT } from "../../services/actions/burger-constructor";
-import { useRef } from 'react';
+import { FC, useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import PropTypes from "prop-types"
+import { TIngredientShort } from "../../utils/types/ingredient";
+import { DragItem } from "../../utils/types/drag-item";
+import type { XYCoord } from 'dnd-core'
 
-const BurgerConstructorElem = ({text, price, id, thumbnail, index }) => {
+type ExtendedIngredientShort = TIngredientShort & {index:number};
+
+
+const BurgerConstructorElem: FC<ExtendedIngredientShort> = ({name, price, id, image, index }) => {
     const dispatch = useDispatch();
-    const ref = useRef(null);
+    const ref = useRef<HTMLDivElement>(null);
 
     const deleteIngredient = () => {
         dispatch({
@@ -18,7 +23,7 @@ const BurgerConstructorElem = ({text, price, id, thumbnail, index }) => {
         });
     };
 
-    const handleMove = (dragIndex, hoverIndex) => {
+    const handleMove = (dragIndex:number, hoverIndex:number) => {
 		dispatch({
 			type: MOVE_INGREDIENT,
 			dragIndex: dragIndex,
@@ -26,7 +31,7 @@ const BurgerConstructorElem = ({text, price, id, thumbnail, index }) => {
 		})
 	}
 
-    const [, drop] = useDrop({
+    const [, drop] = useDrop<DragItem>({
         accept: 'constructorIngredient',
         hover(item, monitor) {
           if (!ref.current) {
@@ -45,7 +50,7 @@ const BurgerConstructorElem = ({text, price, id, thumbnail, index }) => {
           
           const clientOffset = monitor.getClientOffset();
           
-          const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+          const hoverClientY = (clientOffset as XYCoord).y  - hoverBoundingRect.top;
           
           if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
             return
@@ -75,17 +80,10 @@ const BurgerConstructorElem = ({text, price, id, thumbnail, index }) => {
     return (
         <div ref={ref} style={{ opacity }} className={`${burgerConstructorElementStyles.ingredientElem} ml-4 mr-4 mb-4`}>
             <DragIcon type="primary"/>
-            <ConstructorElement text={text} price={price} thumbnail={thumbnail} handleClose={deleteIngredient}/>
+            <ConstructorElement text={name} price={price} thumbnail={image} handleClose={deleteIngredient}/>
         </div>
     )
 }
 
-BurgerConstructorElem.propTypes = {
-	text: PropTypes.string.isRequired,
-	price: PropTypes.number.isRequired,
-    id: PropTypes.string.isRequired,
-	thumbnail: PropTypes.string.isRequired,
-    index: PropTypes.number.isRequired,
-};
 
 export default BurgerConstructorElem;

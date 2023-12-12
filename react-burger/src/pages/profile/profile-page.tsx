@@ -1,4 +1,3 @@
-import { useMatch } from 'react-router-dom'
 import ProfileBody from './profile-body'
 import profileStyles from './profile.module.css'
 import ProfileSideBar from './profile-sidebar'

@@ -11,25 +11,30 @@ import ProtectedRouteElement from '../protected-route';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 
-
+interface State {
+    user: {
+        forgotPasswordSuccess: boolean;
+    };
+  }
 
 const App = () => {
-    
+
     const dispatch = useDispatch();
-    const user = useSelector(state => state.user);
+    const userSelector = (state: State) => state.user;
+    const user = useSelector(userSelector);
 	const access = getCookie('accessToken');
     const location = useLocation();
     const navigate = useNavigate(); 
-    const state = location.state
+    const state = location.state as { backgroundLocation: Location }
 
     const onCloseModal = () => {
         navigate(-1)
       };
 
     useEffect(() => {
-		dispatch(getIngredients())
+		dispatch<any>(getIngredients())
 		
-		dispatch(getUser())
+		dispatch<any>(getUser())
 		
 	}, [dispatch])
 

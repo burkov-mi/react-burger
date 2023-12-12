@@ -1,25 +1,25 @@
-import ModalOverlay from "../../components/modal-overlay/modal-overlay";
+import ModalOverlay from "../modal-overlay/modal-overlay";
 import modalStyles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect } from "react";
-import PropTypes from "prop-types";
+import { useEffect, FC } from "react";
 import { createPortal } from "react-dom";
+import { TModal } from "../../utils/types/modal";
 
-const modalRoot = document.getElementById("root-modal");
+const modalRoot = document.getElementById("root-modal") as HTMLDivElement;
 
-const Modal = (props) => {
-    useEffect(() => {
-        const close = (e) => {
-          if(e.key === "Escape"){
-            props.onCloseModal()
-          }
+const Modal: FC<TModal> = (props) => {
+  useEffect(() => {
+      const close = (e:KeyboardEvent) => {
+        if(e.key === "Escape"){
+          props.onCloseModal()
         }
-        window.addEventListener('keydown', close)
-      return () => {
-        window.removeEventListener('keydown', close)}
-    }, []);
+      }
+      window.addEventListener('keydown', close)
+    return () => {
+      window.removeEventListener('keydown', close)}
+  }, []);
   
-    return createPortal(
+  return createPortal(
     (
       <>
       <div onClick={(e) => e.stopPropagation()} className={modalStyles.modal}>
@@ -33,7 +33,9 @@ const Modal = (props) => {
         ) : (
           <div>
             <div className={`${modalStyles.closeModalIcon} mr-10 mt-15`} onClick={props.onCloseModal}>
-              <CloseIcon className={modalStyles.cursorStyle}type="primary" />
+              <div className={modalStyles.cursorStyle}>
+                <CloseIcon  type="primary" />
+              </div>
             </div>
           </div>
         )}
@@ -45,12 +47,5 @@ const Modal = (props) => {
     modalRoot
   );
 }
-
-
-Modal.propTypes = {
-  onCloseModal: PropTypes.func,
-  header: PropTypes.string,
-  children: PropTypes.any
-};
 
 export default Modal;
