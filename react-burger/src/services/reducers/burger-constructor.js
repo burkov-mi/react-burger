@@ -1,12 +1,14 @@
 import { ADD_BUN, ADD_INGREDIENT, DELETE_INGREDIENT, MOVE_INGREDIENT } from "../actions/burger-constructor";
-import update from 'immutability-helper'
+import update from 'immutability-helper';
+import { AnyAction } from 'redux';
+import { TIngredientShort } from "../../utils/types/ingredient";
 
 const initialState = {
   bun: null,
   ingredients: [], 
 };
 
-export const burgerConstructorReducer = (state = initialState, action) => {
+export const burgerConstructorReducer = (state = initialState, action:AnyAction) => {
   switch( action.type ){
     case ADD_BUN: {
       return {
@@ -23,7 +25,7 @@ export const burgerConstructorReducer = (state = initialState, action) => {
     case DELETE_INGREDIENT: {
       return {
         ...state,
-        ingredients: [...state.ingredients].filter(el => el.id !== action.id)
+        ingredients: [...state.ingredients].filter((el: TIngredientShort) => el.id !== action.id)
       }
     }
     case MOVE_INGREDIENT: {

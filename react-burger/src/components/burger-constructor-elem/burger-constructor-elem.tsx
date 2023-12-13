@@ -6,7 +6,7 @@ import { MOVE_INGREDIENT } from "../../services/actions/burger-constructor";
 import { FC, useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { TIngredientShort } from "../../utils/types/ingredient";
-import { DragItem } from "../../utils/types/drag-item";
+import { TDragItem } from "../../utils/types/drag-item";
 import type { XYCoord } from 'dnd-core'
 
 type ExtendedIngredientShort = TIngredientShort & {index:number};
@@ -31,7 +31,7 @@ const BurgerConstructorElem: FC<ExtendedIngredientShort> = ({name, price, id, im
 		})
 	}
 
-    const [, drop] = useDrop<DragItem>({
+    const [, drop] = useDrop<TDragItem>({
         accept: 'constructorIngredient',
         hover(item, monitor) {
           if (!ref.current) {

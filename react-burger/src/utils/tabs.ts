@@ -1,4 +1,11 @@
-const tabs = [
+interface Tab {
+  _id: number;
+  name: string;
+  value: string;
+  type: string;
+}
+
+const tabs: Tab[] = [
     {
       _id: 0,
       name: "Булки",

@@ -11,7 +11,7 @@ const headers = {
 
 const resetTokenEndpoint = `${baseURL}/auth/token`;
 
-export const requestWithToken = async (endpoint, method, payload) => {
+export const requestWithToken = async (endpoint: string, method: string, payload: any) => {
 	try{
 		return method === "PATCH" ? 
 			 await fetch(endpoint, {
@@ -24,12 +24,12 @@ export const requestWithToken = async (endpoint, method, payload) => {
 			headers,
 		}).then(checkResponse);
 	}
-	catch(err){
+	catch(err: any){
 		if (err.message === 'jwt expired') {
-			const refreshData = await postRequest(resetTokenEndpoint, {token:getCookie('refreshToken')})
+			const refreshData: any = await postRequest(resetTokenEndpoint, {token:getCookie('refreshToken')})
 			setCookie('accessToken', refreshData.accessToken.split('Bearer ')[1])
 			setCookie('refreshToken', refreshData.refreshToken)
-			headers.headers.Authorization = refreshData.accessToken
+			headers.Authorization = refreshData.accessToken
 			return await fetch(endpoint, {
 				method: method,
 				headers,

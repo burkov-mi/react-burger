@@ -11,6 +11,7 @@ import ProtectedRouteElement from '../protected-route';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 
+
 interface State {
     user: {
         forgotPasswordSuccess: boolean;

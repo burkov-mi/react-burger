@@ -14,7 +14,6 @@ import { useNavigate } from "react-router";
 import { TIngredient, TIngredientShort } from "../../utils/types/ingredient";
 import { FC } from "react";
 
-//type ExtendedIngredientShort = TIngredientShort & {id:string};
 
 const BurgerConstructor: FC = () => {
     const dispatch = useDispatch();
@@ -27,7 +26,7 @@ const BurgerConstructor: FC = () => {
          drop(item: TIngredient) { addIngredient({...item, id: v4()}) }
   });
 
-	const addIngredient = (item: TIngredient & { id: string }) => {
+	const addIngredient = (item: TIngredient) => {
 		if(item.type === 'bun') {
 			dispatch({
 				type: ADD_BUN,
