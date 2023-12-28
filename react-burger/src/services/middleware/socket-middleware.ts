@@ -13,7 +13,7 @@ export const socketMiddleware = (wsActions: wsActionsTypes): Middleware => {
     let isWsConnected = false;
     let url = '';
   
-    return next => (action: AnyAction) => {
+    return next => (action) => {
       const { dispatch } = store;
 
       if (action.type === wsActions.onStart) {

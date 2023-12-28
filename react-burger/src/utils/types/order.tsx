@@ -25,7 +25,7 @@ export type TOrderItem = {
 export type TGetOrderResponse = TServerResponse<TOrdersList>
 
 export type TOrdersList = {
-	map: any
+	
     orders: Array<TOrderItem>;
     total: number;
     totalToday: number;
