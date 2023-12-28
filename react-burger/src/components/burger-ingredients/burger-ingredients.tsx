@@ -3,19 +3,21 @@ import ingredientsStyles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsElem from "../burger-ingredients-elem/burger-intgredients-elem";
 import tabs from "../../utils/tabs";
-import { useDispatch, useSelector } from 'react-redux'
-import { SWITCH_TAB } from "../../services/actions/tabs";
+import { switchTab } from '../../services/actions/tabs';
 import { useInView } from "react-intersection-observer";
 import { TCategoryRefMap } from '../../utils/types/category-type';
 import { TIngredient } from '../../utils/types/ingredient';
+import { useAppDispatch, useAppSelector } from '../../utils/types/hooks';
 
 const BurgerIngredients: FC = () => {
-  const dispatch = useDispatch();
-  const { ingredients } = useSelector((store: any) => store.ingredients)
-  const { currentTab } = useSelector( (store: any) => store.currentTab )
+  const dispatch = useAppDispatch();
+  const { ingredients } = useAppSelector(store => store.ingredients)
+  const { currenttab } = useAppSelector(store => store.currentTab )
+  console.log(currenttab)
+ 
 
   const onTabClick = (value: string) => {
-    dispatch({ type: SWITCH_TAB, currentTab: value });
+    dispatch(switchTab(value));
 		const element = document.getElementById(value);
     if (element) element.scrollIntoView({ behavior: "smooth" });
 	};
@@ -38,13 +40,13 @@ const BurgerIngredients: FC = () => {
 
   useEffect(() => {
     if (inViewBun) {
-      dispatch({ type: SWITCH_TAB, currentTab: 'bun' });
+      dispatch(switchTab('bun'));
     }
     else if (inViewSauce) {
-      dispatch({ type: SWITCH_TAB, currentTab: 'sauce' });
+      dispatch(switchTab('sauce'));
     }
     else if (inViewMain) {
-      dispatch({ type: SWITCH_TAB, currentTab: 'main' });
+      dispatch(switchTab('main'));
     }
    }, [inViewBun, inViewSauce, inViewMain]);
 
@@ -53,7 +55,7 @@ const BurgerIngredients: FC = () => {
       <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
       <div className={`${ingredientsStyles.tabs} mb-10`}>
         {tabs.map((tab) => (
-          <Tab key={tab._id} value={tab.value} active={currentTab === tab.value}
+          <Tab key={tab._id} value={tab.value} active={currenttab === tab.value}
             onClick={() => onTabClick(tab.value)}
           >
             {tab.name}

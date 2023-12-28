@@ -24,9 +24,9 @@ const AppHeader: FC = () => {
                         <BurgerIcon type={iconType("/", location.pathname)}/>
                         <span className={`${colorTextType("/", location.pathname)} text text_type_main-default ml-2`}>Конструктор</span>
                     </NavLink>
-                    <NavLink to="/profile/orders" className={`${headerStyles.menuItem} p-4`}>
-                        <ListIcon type={iconType("/profile/orders", location.pathname)}/>
-                        <span className={`${colorTextType("/profile/orders", location.pathname)} ${headerStyles.colorTitle} text text_type_main-default ml-2`}>Лента заказов</span>
+                    <NavLink to="/feed" className={`${headerStyles.menuItem} p-4`}>
+                        <ListIcon type={iconType("/feed", location.pathname)}/>
+                        <span className={`${colorTextType("/feed", location.pathname)} ${headerStyles.colorTitle} text text_type_main-default ml-2`}>Лента заказов</span>
                     </NavLink>
                 </div>
                 <div className={`${headerStyles.centerPosition} ${headerStyles.fullHeight}`}>

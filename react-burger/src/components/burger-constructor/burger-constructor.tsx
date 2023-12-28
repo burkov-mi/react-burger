@@ -2,10 +2,9 @@ import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktiku
 import burgerConstructorStyles from "./burger-constructor.module.css"
 import OrderDetails from "../order-details/order-details";
 import Modal from "../modal/modal";
-import { useDispatch, useSelector } from 'react-redux'
-import { HIDE_ORDER_DETAIL } from "../../services/actions/make-order";
-import { makeOrder } from "../../services/actions/make-order";
-import { ADD_BUN, ADD_INGREDIENT } from "../../services/actions/burger-constructor";
+import { useAppDispatch, useAppSelector } from "../../utils/types/hooks";
+import { makeOrder, hideOrderDetail } from "../../services/actions/make-order";
+import { addBun, addIngredient } from "../../services/actions/burger-constructor";
 import { useDrop } from 'react-dnd';
 import { v4 } from 'uuid';
 import { totalPriceSelector } from "../../utils/totalPriceSelector";
@@ -16,35 +15,30 @@ import { FC } from "react";
 
 
 const BurgerConstructor: FC = () => {
-    const dispatch = useDispatch();
-    const orderIdentifier = useSelector((store: any) => store.makeOrder.orderIdentifier);
-    const { bun, ingredients } = useSelector((store: any) => store.constructorBurger);
-    const user = useSelector((state: any) => state.user.user);
+    const dispatch = useAppDispatch();
+    const orderIdentifier = useAppSelector(store=> store.makeOrder.order?.order.number);
+    console.log('orderident', orderIdentifier)
+    const { bun, ingredients } = useAppSelector( store => store.constructorBurger);
+    const user = useAppSelector( state => state.user.user);
     const navigate = useNavigate();
     const [, dropTarget] = useDrop({
 		accept: 'ingredient',
-         drop(item: TIngredient) { addIngredient({...item, id: v4()}) }
+         drop(item: TIngredient) { addIngredientItem({...item, id: v4()}) }
   });
 
-	const addIngredient = (item: TIngredient) => {
+	const addIngredientItem = (item: TIngredient) => {
 		if(item.type === 'bun') {
-			dispatch({
-				type: ADD_BUN,
-				bun: item
-			});
+			dispatch(addBun(item));
 		}
 		else {
-			dispatch({
-				type: ADD_INGREDIENT,
-  				ingredient: item
-			});
+			dispatch(addIngredient(item));
 		}
   };
 
-    const totalPrice = useSelector(totalPriceSelector);
+    const totalPrice = useAppSelector(totalPriceSelector);
 
     const handleClose = () => {
-		dispatch({type: HIDE_ORDER_DETAIL});
+		dispatch(hideOrderDetail());
 	}
 
   const onSubmit = (e: React.SyntheticEvent) => {
@@ -54,8 +48,15 @@ const BurgerConstructor: FC = () => {
     }
     else{
       const burgerElems = [bun, ...ingredients]
-      const ingredientsIds = burgerElems.map( el => el._id)
-      dispatch<any>(makeOrder(ingredientsIds));
+      const ingredientsIds = burgerElems.map( el => {
+        if (el === null){
+          return ''
+        } else {
+          return el._id
+        }
+      })
+      console.log('idsh', ingredientsIds)
+      dispatch(makeOrder(ingredientsIds));
     }
   }
     
@@ -77,7 +78,7 @@ const BurgerConstructor: FC = () => {
                     ingredients.map((elem: TIngredientShort, index:number) => {
                     {
                     return (
-                      <BurgerConstructorElem name={elem.name} price={elem.price} image={elem.image} id={elem.id} key={elem.id} index={index} />
+                      <BurgerConstructorElem name={elem.name} price={elem.price} image={elem.image} id={elem.id ?? ''} key={elem.id} index={index} />
                     );
                 }
                 

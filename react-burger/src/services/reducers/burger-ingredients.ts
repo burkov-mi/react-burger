@@ -1,12 +1,21 @@
-import { GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_SUCCESS, GET_INGREDIENTS_FAILED, SHOW_INGREDIENT_DETAIL, HIDE_INGREDIENT_DETAIL } from "../actions/burger-ingredients"
+import { GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_SUCCESS, GET_INGREDIENTS_FAILED, SHOW_INGREDIENT_DETAIL, HIDE_INGREDIENT_DETAIL } from "../actions/constants"
+import { TIngredient } from "../../utils/types/ingredient";
+import { TIngredientsActions } from "../actions/burger-ingredients";
 
-const initialState = {
+export type TIngredientsState = {
+	ingredients: Array<TIngredient>
+	ingredientsRequest: boolean
+	ingredientsFailed: boolean
+    ingredientDetail: TIngredient | null
+}
+
+const initialState: TIngredientsState = {
     ingredients: [],
     ingredientsRequest: false,
     ingredientsFailed: false,
     ingredientDetail: null,
 }
-export const burgerIngredientsReducer = (state = initialState, action) => {
+export const burgerIngredientsReducer = (state = initialState, action: TIngredientsActions) => {
     switch( action.type ) {
         case GET_INGREDIENTS_REQUEST: {
             return {
@@ -27,6 +36,7 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
                 ...state,
                 ingredientsRequest: false,
                 ingredientsFailed: true,
+                ingredients: [],
             }
         }
         case SHOW_INGREDIENT_DETAIL: {

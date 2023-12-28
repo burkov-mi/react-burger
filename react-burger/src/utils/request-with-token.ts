@@ -1,7 +1,7 @@
 import { getCookie, setCookie } from './cookie';
 import { checkResponse } from './check-response';
 import { postRequest } from './post-request';
-import baseURL from './base-url';
+import { baseURL } from './base-url';
 
 
 const headers = {
@@ -11,15 +11,15 @@ const headers = {
 
 const resetTokenEndpoint = `${baseURL}/auth/token`;
 
-export const requestWithToken = async (endpoint: string, method: string, payload: any) => {
+export const requestWithToken = async <T>(endpoint: string, method: string, payload: any) => {
 	try{
-		return method === "PATCH" ? 
-			 await fetch(endpoint, {
+		return method === "PATCH" || method === "POST" ? 
+			 await <T>fetch(endpoint, {
 			method: method,
 			headers,
 			body: JSON.stringify(payload)
 		}).then(checkResponse) : 
-		await fetch(endpoint, {
+		await <T>fetch(endpoint, {
 			method: method,
 			headers,
 		}).then(checkResponse);
@@ -30,7 +30,7 @@ export const requestWithToken = async (endpoint: string, method: string, payload
 			setCookie('accessToken', refreshData.accessToken.split('Bearer ')[1])
 			setCookie('refreshToken', refreshData.refreshToken)
 			headers.Authorization = refreshData.accessToken
-			return await fetch(endpoint, {
+			return await <T>fetch(endpoint, {
 				method: method,
 				headers,
 				body: JSON.stringify({
