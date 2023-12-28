@@ -6,8 +6,7 @@ type TProp = {
 };
 
 const Statistic: FC<TProp>= ({data}) => {
-	//const { total, totalToday, orders } = useAppSelector(getOrdersData)
-
+    
 	return (
 		<section className='ml-15'>
 			<div className={`${styles.status} mb-15`}>
@@ -15,7 +14,7 @@ const Statistic: FC<TProp>= ({data}) => {
 					<h3 className='text text_type_main-medium mb-6'>Готовы:</h3>
 					<div className={styles.numbers}>
 						{data.orders
-							?.slice(0, 30)
+							?.slice(0, 10)
 							.filter(item => item.status === 'done')
 							.map(item => (
 								<p
@@ -31,7 +30,7 @@ const Statistic: FC<TProp>= ({data}) => {
 					<h3 className='text text_type_main-medium mb-6'>В работе:</h3>
 					<div className={styles.numbers}>
 						{data.orders
-							?.slice(0, 20)
+							?.slice(0, 10)
 							.filter(item => item.status === 'pending')
 							.map(item => (
 								<p
