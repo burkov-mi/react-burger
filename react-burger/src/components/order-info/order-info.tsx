@@ -2,7 +2,6 @@ import { useMemo, FC, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { getOrderAction } from '../../services/actions/get-order';
 import { useAppSelector, useAppDispatch } from '../../utils/types/hooks';
-import { RootState } from '../../services/store';
 import { TIngredient, TIngredientQty } from '../../utils/types/ingredient';
 import styles from './order-info.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -15,8 +14,8 @@ const OrderInfo: FC = () => {
     dispatch(getOrderAction(id));
   }, [dispatch, id]);
 
-  const { order } = useAppSelector((state: RootState) => state.getOrder);
-  const { ingredients } = useAppSelector((state: RootState) => state.ingredients);
+  const { order } = useAppSelector(state => state.getOrder);
+  const { ingredients } = useAppSelector(state => state.ingredients);
 
   const orderIngredients = useMemo(
     () => {

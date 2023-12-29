@@ -4,13 +4,12 @@ import OrdersList from "../../components/order-list/order-list";
 import { useEffect } from "react";
 import { ORDERS_USER_START, ORDERS_USER_END } from "../../services/actions/constants";
 import styles from './profile.module.css';
-import { RootState } from "../../services/store";
 import { WS_URL } from "../../utils/base-url";
 import ProfileSideBar from "./profile-sidebar";
 
 const ProfileOrdersPage = () => {
   const dispatch = useAppDispatch();
-  const { connected, error, message } = useAppSelector((state: RootState) => state.userOrder);
+  const { connected, error, message } = useAppSelector(state => state.userOrder);
 
   useEffect(() => {
       dispatch({ type: ORDERS_USER_START, url: `${WS_URL}/orders`, addToken: true });

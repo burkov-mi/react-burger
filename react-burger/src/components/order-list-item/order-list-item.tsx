@@ -2,7 +2,6 @@ import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burge
 import { FC, useMemo } from "react";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
-import { RootState } from "../../services/store";
 import { useAppSelector } from "../../utils/types/hooks";
 import { TIngredient } from "../../utils/types/ingredient";
 import { TOrderItem } from "../../utils/types/order";
@@ -16,7 +15,7 @@ const OrdersListItem: FC<TOrderData> = ({order}) => {
     const location = useLocation(); 
     const countItemsMax = 6;
   
-    const { ingredients } = useAppSelector((state: RootState) => state.ingredients);
+    const { ingredients } = useAppSelector(state => state.ingredients);
   
     const orderStatus = useMemo(
       () => order.status === 'done' ? 'Выполнен' : 

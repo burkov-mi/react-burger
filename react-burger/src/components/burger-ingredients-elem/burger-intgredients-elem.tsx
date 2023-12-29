@@ -7,7 +7,6 @@ import { useDrag } from 'react-dnd';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router'
 import { TBurgerIngredient } from "../../utils/types/ingredient";
-import { RootState } from "../../services/store";
 
 
 
@@ -18,7 +17,7 @@ const BurgerIngredientsElem: FC<TBurgerIngredient> = ({item}) => {
     dispatch(showIngredientDetail(item));
   };
 
-	const { bun, ingredients } = useAppSelector((state: RootState) => state.constructorBurger);
+	const { bun, ingredients } = useAppSelector(state => state.constructorBurger);
   const count = useMemo(() => {
     return [bun, ...ingredients].filter(el => {
       if (el) {
