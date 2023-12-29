@@ -1,5 +1,9 @@
-//import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-//import type { RootState, AppDispatch } from '../../services/reducers/index';
+import { TypedUseSelectorHook,useDispatch as dispatchHook, useSelector as selectorHook, } from 'react-redux'
+
+import { AppDispatch, RootState } from '../../services/store'
+
+export const useAppDispatch = () => dispatchHook<AppDispatch>()
+export const useAppSelector: TypedUseSelectorHook<RootState> = selectorHook
 
 export type TInputValues = {
 	name?: string
@@ -7,7 +11,3 @@ export type TInputValues = {
 	email?: string
 	token?: string
 }
-/*
-type DispatchFunc = () => AppDispatch
-export const useAppDispatch: DispatchFunc = useDispatch
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector*/

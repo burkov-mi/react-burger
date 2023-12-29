@@ -2,5 +2,5 @@ import { ReactElement } from "react"
 
 export type TRoute = {
     element: ReactElement
-    isAuth: any
+    isAuth: boolean
 }

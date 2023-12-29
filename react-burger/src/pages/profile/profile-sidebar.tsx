@@ -1,17 +1,26 @@
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import profileNavStyles from './profile.module.css';
 import { logout } from '../../services/actions/user';
 import { FC } from 'react';
+import { useAppDispatch } from '../../utils/types/hooks';
 
+type props = {
+	isOrderPage: boolean
+}
 
-const ProfileSideBar: FC = () => {
-	const dispatch = useDispatch()
-
+const ProfileSideBar: FC<props> = (props) => {
+	const dispatch = useAppDispatch()
 	const handleLogout = (e: React.SyntheticEvent) => {
 		e.preventDefault()
-		dispatch<any>(logout())
+		dispatch(logout())
 	}
+	let info = "";
+    if (props.isOrderPage) {
+        info = "В этом разделе вы можете просмотреть свою историю заказов";
+    } else {
+        info = "В этом разделе вы можете изменить свои персональные данные";
+    } 
+    
 	return (
 		<nav className={`${profileNavStyles.sidebar} mr-15`}>
 			<NavLink
@@ -19,7 +28,7 @@ const ProfileSideBar: FC = () => {
 				className={`${profileNavStyles.navitem} text text_type_main-medium`}
 			>
 				{({ isActive }) => (
-					<p className={isActive ? profileNavStyles.active : 'text_color_inactive'}>
+					<p className={!props.isOrderPage ? profileNavStyles.active : 'text_color_inactive'}>
 						Профиль
 					</p>
 				)}
@@ -29,7 +38,7 @@ const ProfileSideBar: FC = () => {
 				className={`${profileNavStyles.navitem} text text_type_main-medium`}
 			>
 				{({ isActive }) => (
-					<p className={isActive ? profileNavStyles.active : 'text_color_inactive'}>
+					<p className={props.isOrderPage ? profileNavStyles.active : 'text_color_inactive'}>
 						История заказов
 					</p>
 				)}
@@ -44,7 +53,7 @@ const ProfileSideBar: FC = () => {
 			<p
 				className={"text text_type_main-default text_color_inactive mt-20"}
 			>
-				В этом разделе вы можете изменить свои персональные данные
+				{info}
 			</p>
 		</nav>
 	)

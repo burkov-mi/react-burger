@@ -20,9 +20,35 @@ import {
     PATCH_USER_REQUEST,
     PATCH_USER_SUCCESS,
     PATCH_USER_FAILED,
-} from '../actions/user.js';
+} from '../actions/constants';
 
-const initialState = {
+import { TUser } from '../../utils/types/user';
+import { TUserActions } from '../actions/user';
+
+type TUserState = {
+    registerRequest: boolean
+	registerFailed: boolean
+    accessToken: string
+	refreshToken: string
+    user: TUser | null
+    loginRequest: boolean
+	loginFailed: boolean
+    userRequest: boolean
+    userFailed: boolean
+    logoutRequest: boolean
+    logoutFailed: boolean
+    forgotPasswordRequest: boolean
+    forgotPasswordSuccess: boolean
+	forgotPasswordFailed: boolean
+    resetPasswordRequest: boolean
+    resetPasswordSuccess: boolean
+	resetPasswordFailed: boolean
+    patchUserRequest: boolean
+    patchUserFailed: boolean
+    isAuth: boolean
+}
+
+const initialState: TUserState = {
     registerRequest: false,
 	registerFailed: false,
     accessToken: '',
@@ -50,16 +76,17 @@ const initialState = {
     patchUserFailed: false,
 
     isAuth: false,
-
 }
 
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action: TUserActions) => {
     switch (action.type) {
         case REGISTER_REQUEST:
             return { ...state, registerRequest: true };
+
         case REGISTER_SUCCESS:
             return {
+                ...state,
                 registerRequest: false,
                 user: action.payload.user,
 				accessToken: action.payload.accessToken.split('Bearer ')[1],

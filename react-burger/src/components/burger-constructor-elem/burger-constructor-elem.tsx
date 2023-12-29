@@ -1,34 +1,23 @@
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorElementStyles from "./burger-constructor-elem.module.css";
-import { useDispatch } from 'react-redux'
-import { DELETE_INGREDIENT } from '../../services/actions/burger-constructor'
-import { MOVE_INGREDIENT } from "../../services/actions/burger-constructor";
+import { useAppDispatch } from "../../utils/types/hooks";
+import { deleteIngredient, moveIngredient } from "../../services/actions/burger-constructor";
 import { FC, useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { TIngredientShort } from "../../utils/types/ingredient";
+import { TIngredientItemProps } from "../../utils/types/ingredient";
 import { TDragItem } from "../../utils/types/drag-item";
 import type { XYCoord } from 'dnd-core'
 
-type ExtendedIngredientShort = TIngredientShort & {index:number};
-
-
-const BurgerConstructorElem: FC<ExtendedIngredientShort> = ({name, price, id, image, index }) => {
-    const dispatch = useDispatch();
+const BurgerConstructorElem: FC<TIngredientItemProps> = ({name, price, id, image, index }) => {
+    const dispatch = useAppDispatch();
     const ref = useRef<HTMLDivElement>(null);
 
-    const deleteIngredient = () => {
-        dispatch({
-            type: DELETE_INGREDIENT,
-            id: id
-        });
+    const delIngredient = () => {
+        dispatch(deleteIngredient(id));
     };
 
     const handleMove = (dragIndex:number, hoverIndex:number) => {
-		dispatch({
-			type: MOVE_INGREDIENT,
-			dragIndex: dragIndex,
-			hoverIndex: hoverIndex
-		})
+		dispatch(moveIngredient(dragIndex, hoverIndex))
 	}
 
     const [, drop] = useDrop<TDragItem>({
@@ -80,7 +69,7 @@ const BurgerConstructorElem: FC<ExtendedIngredientShort> = ({name, price, id, im
     return (
         <div ref={ref} style={{ opacity }} className={`${burgerConstructorElementStyles.ingredientElem} ml-4 mr-4 mb-4`}>
             <DragIcon type="primary"/>
-            <ConstructorElement text={name} price={price} thumbnail={image} handleClose={deleteIngredient}/>
+            <ConstructorElement text={name} price={price} thumbnail={image} handleClose={delIngredient}/>
         </div>
     )
 }
