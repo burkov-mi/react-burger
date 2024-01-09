@@ -1,14 +1,14 @@
 import { Button, Input, PasswordInput,} from '@ya.praktikum/react-developer-burger-ui-components';
 import profileBodyStyle from './profile.module.css';
 import { useEffect, FC, FormEvent } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../utils/types/hooks'
 import { patchUser } from '../../services/actions/user';
 import { useForm } from '../../hooks/use-form';
 
 
 const ProfileBody: FC = () => {
-	const dispatch = useDispatch();
-	const userCurrentData = useSelector((state:any) => state.user.user);
+	const dispatch = useAppDispatch();
+	const userCurrentData = useAppSelector(state => state.user.user);
 	const { form, onChange, setValue } = useForm({
 		name: '',
 		email: '',
@@ -30,14 +30,14 @@ const ProfileBody: FC = () => {
 	const handleCancel = () => {
 		setValue({
 			...form,
-			email: userCurrentData.email,
-			name: userCurrentData.name,
+			email: userCurrentData?.email,
+			name: userCurrentData?.name,
 			password: "",
 		})
 	}
 	const handleSubmit = (e: FormEvent<HTMLFormElement> )=> {
 		e.preventDefault()
-		dispatch<any>(patchUser(form.name, form.email, form.password))
+		dispatch(patchUser(form.name as string, form.email as string, form.password as string))
 	}
 	
     return (

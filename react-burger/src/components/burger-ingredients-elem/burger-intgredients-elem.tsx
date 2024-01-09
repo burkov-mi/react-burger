@@ -1,7 +1,7 @@
 import elemStyles from "./burger-ingredients-elem.module.css";
 import { CurrencyIcon, Counter,} from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from 'react-redux'
-import { SHOW_INGREDIENT_DETAIL } from "../../services/actions/burger-ingredients";
+import { useAppDispatch, useAppSelector } from "../../utils/types/hooks";
+import { showIngredientDetail } from "../../services/actions/burger-ingredients";
 import { useMemo, FC } from 'react';
 import { useDrag } from 'react-dnd';
 import { Link } from 'react-router-dom';
@@ -11,16 +11,13 @@ import { TBurgerIngredient } from "../../utils/types/ingredient";
 
 
 const BurgerIngredientsElem: FC<TBurgerIngredient> = ({item}) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation()
   const ingredientClick = () => {
-    dispatch({
-      type: SHOW_INGREDIENT_DETAIL,
-      item
-    });
+    dispatch(showIngredientDetail(item));
   };
 
-	const { bun, ingredients } = useSelector((state: any) => state.constructorBurger);
+	const { bun, ingredients } = useAppSelector(state => state.constructorBurger);
   const count = useMemo(() => {
     return [bun, ...ingredients].filter(el => {
       if (el) {
@@ -28,7 +25,7 @@ const BurgerIngredientsElem: FC<TBurgerIngredient> = ({item}) => {
       }
       return false;
     }).length;
-  }, [bun, ingredients]);
+  }, [bun, ingredients, item._id]);
  
 
   const [{ opacity }, ref] = useDrag({
