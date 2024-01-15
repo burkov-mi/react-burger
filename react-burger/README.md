@@ -30,4 +30,4 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ## GitHub Page
-https://github.com/burkov-mi/react-burger/pull/8
+https://burkov-mi.github.io/react-burger/
