@@ -17,7 +17,8 @@ type TPayload =
 
 
 const resetTokenEndpoint = `${baseURL}/auth/token`;
-
+// lint disabled due to prevent warning of typing <T>
+/* eslint-disable */
 export const requestWithToken = async <T>(endpoint: string, method: string, payload: TPayload) => {
 	try{
 		return method === "PATCH" || method === "POST" ? 
@@ -50,3 +51,4 @@ export const requestWithToken = async <T>(endpoint: string, method: string, payl
 	}
 	
 }
+/* eslint-enable */

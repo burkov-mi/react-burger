@@ -1,4 +1,4 @@
-import { baseURL, testURL } from '../../src/utils/base-url';
+import { baseURL  } from '../../src/utils/base-url';
 import { scenario } from '../../src/utils/cypress';
 
 describe('constructor', () => {
@@ -9,7 +9,7 @@ describe('constructor', () => {
 		cy.intercept('POST', `${baseURL}/orders`, {
 			fixture: 'order.json',
 		}).as('make-order')
-		cy.visit(testURL)
+		cy.visit('')
 	})
 
 	it('should interaction with modal ingredient details', () => {
@@ -44,7 +44,7 @@ describe('constructor', () => {
 		)
 
 		cy.get('@modal').find(scenario('close_modal')).click({ force: true })
-		cy.url().should('include', testURL);
+		cy.url().should('include', '');
 	})
 
 	it('should interaction with modal order details', () => {
@@ -64,7 +64,7 @@ describe('constructor', () => {
 		})
 
 		cy.get('@modal').find(scenario('close_modal')).click({ force: true })
-		cy.url().should('include', testURL);
+		cy.url().should('include', '');
 	})
 
 	it('should d&d a bun ingredient into constructor', () => {

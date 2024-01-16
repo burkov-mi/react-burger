@@ -20,14 +20,15 @@ export function setCookie(name: string, value: string | number | null | boolean,
     }
     document.cookie = updatedCookie;
   } 
-
+// lint disabled due to escaping character
+/* eslint-disable */
   export function getCookie(name: string) {
     const matches = document.cookie.match(
       new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
     );
     return matches ? decodeURIComponent(matches[1]) : undefined;
   } 
-
+/* eslint-enable */
   export function deleteCookie(name: string) {
 	  setCookie(name, null, { expires: -1 })
 };
