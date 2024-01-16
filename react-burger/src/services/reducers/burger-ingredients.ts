@@ -9,12 +9,14 @@ export type TIngredientsState = {
     ingredientDetail: TIngredient | null
 }
 
-const initialState: TIngredientsState = {
+export const initialState: TIngredientsState = {
     ingredients: [],
     ingredientsRequest: false,
     ingredientsFailed: false,
     ingredientDetail: null,
 }
+
+
 export const burgerIngredientsReducer = (state = initialState, action: TIngredientsActions) => {
     switch( action.type ) {
         case GET_INGREDIENTS_REQUEST: {

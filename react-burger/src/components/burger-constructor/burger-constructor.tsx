@@ -55,7 +55,6 @@ const BurgerConstructor: FC = () => {
           return el._id
         }
       })
-      console.log('idsh', ingredientsIds)
       dispatch(makeOrder(ingredientsIds));
     }
   }
@@ -67,10 +66,10 @@ const BurgerConstructor: FC = () => {
                 <OrderDetails orderIdentifier={orderIdentifier}/>
             </Modal> }
         
-          <div className={`${burgerConstructorStyles.basketList} mt-25` } ref={dropTarget}>
+          <div className={`${burgerConstructorStyles.basketList} mt-25` } ref={dropTarget} test-scenario='constructor_page'>
           { (bun) ?
           <>
-            <div className={`${burgerConstructorStyles.external} ml-4 mr-4 mb-4`}>
+            <div className={`${burgerConstructorStyles.external} ml-4 mr-4 mb-4`} test-scenario='constructor_bun'>
                 <ConstructorElement type="top" isLocked={true} text={`${bun.name} - верх`} price={bun.price} thumbnail={bun.image}/>
             </div>
             <div className={burgerConstructorStyles.internal}>
@@ -84,7 +83,7 @@ const BurgerConstructor: FC = () => {
                 
                 })}
             </div>
-            <div className="ml-4 mr-4 mb-4">
+            <div className={`${burgerConstructorStyles.external} ml-4 mr-4 mb-4`} test-scenario='constructor_bun'>
                 <ConstructorElement type="bottom" isLocked={true} text={`${bun.name} - низ`} price={bun.price} thumbnail={bun.image}/>
             </div>
             <div className={`${burgerConstructorStyles.orderInfo} mt-10`}>
@@ -93,7 +92,7 @@ const BurgerConstructor: FC = () => {
                     <CurrencyIcon type="primary" />
                 </div>
                 <div className={burgerConstructorStyles.orderInfoButton}>
-                    <Button htmlType="submit" type="primary" size="large" onClick={onSubmit}>Оформить заказ</Button>
+                    <Button htmlType="submit" type="primary" size="large" onClick={onSubmit} test-scenario='button_submit'>Оформить заказ</Button>
                 </div>
             </div>
             </> : 
